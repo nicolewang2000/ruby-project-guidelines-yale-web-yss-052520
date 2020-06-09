@@ -14,21 +14,21 @@ API_HOST = "https://api.yelp.com"
 SEARCH_PATH = "/v3/businesses/search"
 BUSINESS_PATH = "/v3/businesses/"
 
-def self.search(term, location, price)
+def self.search(term, location, price = "1", sort_by = "rating")
   url = "#{API_HOST}#{SEARCH_PATH}"
   params = {
     term: term,
     location: location,
     price: price,
-    limit: 50 #optional, default limit is 20, maximum is 50
+    sort_by: sort_by,
+    limit: 10 #optional, default limit is 20, maximum is 50
   }
 
   response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
   response.parse
 end
 
-
-def self.business(business_id)
+def business(business_id)
   url = "#{API_HOST}#{BUSINESS_PATH}#{business_id}"
 
   response = HTTP.auth("Bearer #{API_KEY}").get(url)
@@ -51,6 +51,10 @@ OptionParser.new do |opts|
     options[:price] = price
   end
 
+  opts.on("-SORT_BY", "--sort_by=SORT_BY", "Search sort_by (for search)") do |sort_by|
+    options[:sort_by] = sort_by
+  end
+
   opts.on("-bBUSINESS_ID", "--business-id=BUSINESS_ID", "Business id (for lookup)") do |id|
     options[:business_id] = id
   end
@@ -63,6 +67,13 @@ end.parse!
 
 end
 
+require "awesome_print"
 
 binding.pry
 0
+
+# p.map do |k, v|
+#   v.map do |business|
+#     attribute["id"]
+#   end 
+# end
