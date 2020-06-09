@@ -5,6 +5,8 @@ class Business < ActiveRecord::Base
     # daynames constant adjusted so Day 0 = Monday
     DAYNAMES = Date::DAYNAMES.rotate(1)
 
+
+    
     # returns hash w/ daynames as keys pointing to arrays of start and end times
     # if business has multiple start/end times in one day, array = [start, end, start, end, etc.]
     def hours_helper
@@ -18,6 +20,7 @@ class Business < ActiveRecord::Base
         end
     end
 
+    # returns detailed business hash from API including specific hours
     def detailed_info
         ApiAdapter.business(yelp_business_id)
     end
