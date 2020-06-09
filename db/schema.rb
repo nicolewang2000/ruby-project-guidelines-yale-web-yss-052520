@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_09_000438) do
+ActiveRecord::Schema.define(version: 2020_06_09_213456) do
 
   create_table "businesses", force: :cascade do |t|
     t.string "name"
     t.string "zipcode"
     t.float "avg_rating"
     t.integer "review_count"
+    t.string "yelp_business_id"
   end
 
   create_table "reservations", force: :cascade do |t|

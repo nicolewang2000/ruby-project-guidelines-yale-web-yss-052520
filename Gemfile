@@ -9,5 +9,6 @@ gem "pry"
 gem "require_all"
 gem 'rake'
 gem 'http'
+gem 'activerecord-reset-pk-sequence'
 
 
