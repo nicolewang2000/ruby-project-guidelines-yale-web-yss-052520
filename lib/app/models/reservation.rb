@@ -12,15 +12,12 @@ class Reservation < ActiveRecord::Base
 
     # Given reservation instance, determine whether it is still valid
     def is_valid?
-
+        within_hours? && !past?
     end
 
     def within_hours?
         hours = self.business.hours_helper[week_day_helper(self.date)]
         time = hour_minute_helper(self.date)
-        # Next steps:
-        #   - check to split hours array into twos (start/end pairs)
-        #   - check if time is between start/end times
         hours.each_slice(2) do |times|
             return true if time.between?(times[0].to_i, times[1].to_i)
         end
@@ -28,7 +25,8 @@ class Reservation < ActiveRecord::Base
     end
 
     def past?
-
+        return true if !self.date
+        Time.now > self.date
     end
 end
 
