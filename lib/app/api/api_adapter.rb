@@ -29,24 +29,24 @@ class ApiAdapter
     response.parse
   end
 
-  def self.business_names(term, location)
-    self.search["businesses"].map {|business| business["name"]} 
+  def self.names(term, location)
+    self.search(term, location)["businesses"].map {|business| business["name"]} 
   end 
   
-  def self.business_ids(term, location)
-    self.search["businesses"].map {|business| business["id"]} 
+  def self.ids(term, location)
+    self.search(term, location)["businesses"].map {|business| business["id"]} 
   end 
   
-  def self.business_addresses(term, location)
-    self.search["businesses"].map {|business| business["location"]["display_address"]}.flatten
+  def self.addresses(term, location)
+    self.search(term, location)["businesses"].map {|business| business["location"]["display_address"]}.flatten
   end 
   
-  def self.business_prices(term, location)
-    self.search["businesses"].map {|business| business["price"]}
+  def self.prices(term, location)
+    self.search(term, location)["businesses"].map {|business| business["price"]}
   end 
   
-  def self.business_ratings(term, location)
-    self.search["businesses"].map {|business| business["rating"]}
+  def self.ratings(term, location)
+    self.search(term, location)["businesses"].map {|business| business["rating"]}
   end 
   
 
