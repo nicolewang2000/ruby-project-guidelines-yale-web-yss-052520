@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_09_213456) do
+ActiveRecord::Schema.define(version: 2020_06_09_232715) do
 
   create_table "businesses", force: :cascade do |t|
     t.string "name"
-    t.string "zipcode"
+    t.string "address"
     t.float "avg_rating"
     t.integer "review_count"
     t.string "yelp_business_id"

@@ -9,7 +9,10 @@ class Reservation < ActiveRecord::Base
 # User chooses date/time + # of people
 # Create new instance of Business object
 # Given those arguments, create new instance of Reservation class for that user_id/business_id
-    
+
+    def is_valid?
+
+    end
 end
 
 # to get hours, must make GET request using business ID
