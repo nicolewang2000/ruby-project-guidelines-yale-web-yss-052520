@@ -1,6 +1,7 @@
 require "json"
 require "http"
 require "optparse"
+require 'pry'
 
 class ApiAdapter 
 
@@ -13,13 +14,14 @@ class ApiAdapter
   API_HOST = "https://api.yelp.com"
   SEARCH_PATH = "/v3/businesses/search"
   BUSINESS_PATH = "/v3/businesses/"
-  SEARCH_LIMIT = 50
+  SEARCH_LIMIT = 10
 
-  def self.search(term, location)
+  def self.search(term, location, sort_by = "best_match")
     url = "#{API_HOST}#{SEARCH_PATH}"
     params = {
       term: term,
       location: location,
+      sort_by: sort_by,
       limit: SEARCH_LIMIT
     }
 
@@ -47,6 +49,10 @@ class ApiAdapter
       options[:location] = location
     end
 
+    opts.on("-sSORT_BY", "--sort_by=SORT_BY", "Search sort_by (for search)") do |sort_by|
+      options[:sort_by] = sort_by
+    end
+
     opts.on("-bBUSINESS_ID", "--business-id=BUSINESS_ID", "Business id (for lookup)") do |id|
       options[:business_id] = id
     end
@@ -59,7 +65,24 @@ class ApiAdapter
 
 end
 
-binding.pry
-0
+# returns a list of array for the table (not sure how to make the arrays into a table yet)
 
+def buisness_names
+  find["businesses"].map {|business| business["name"]} 
+end 
 
+def buisness_ids
+  find["businesses"].map {|business| business["id"]} 
+end 
+
+def buisness_addresses
+  find["businesses"].map {|business| business["location"]["display_address"]}.flatten
+end 
+
+def buisness_price
+  find["businesses"].map {|business| business["price"]}
+end 
+
+def buisness_rating
+  find["businesses"].map {|business| business["rating"]}
+end 
