@@ -10,5 +10,6 @@ gem "require_all"
 gem 'rake'
 gem 'http'
 gem 'tty-prompt'
+gem 'activerecord-reset-pk-sequence'
 
 

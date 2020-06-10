@@ -29,6 +29,26 @@ class ApiAdapter
     response.parse
   end
 
+  def self.business_names(term, location)
+    self.search["businesses"].map {|business| business["name"]} 
+  end 
+  
+  def self.business_ids(term, location)
+    self.search["businesses"].map {|business| business["id"]} 
+  end 
+  
+  def self.business_addresses(term, location)
+    self.search["businesses"].map {|business| business["location"]["display_address"]}.flatten
+  end 
+  
+  def self.business_prices(term, location)
+    self.search["businesses"].map {|business| business["price"]}
+  end 
+  
+  def self.business_ratings(term, location)
+    self.search["businesses"].map {|business| business["rating"]}
+  end 
+  
 
   def self.business(business_id)
     url = "#{API_HOST}#{BUSINESS_PATH}#{business_id}"
@@ -65,24 +85,6 @@ class ApiAdapter
 
 end
 
-# returns a list of array for the table (not sure how to make the arrays into a table yet)
 
-def buisness_names
-  find["businesses"].map {|business| business["name"]} 
-end 
 
-def buisness_ids
-  find["businesses"].map {|business| business["id"]} 
-end 
 
-def buisness_addresses
-  find["businesses"].map {|business| business["location"]["display_address"]}.flatten
-end 
-
-def buisness_price
-  find["businesses"].map {|business| business["price"]}
-end 
-
-def buisness_rating
-  find["businesses"].map {|business| business["rating"]}
-end 

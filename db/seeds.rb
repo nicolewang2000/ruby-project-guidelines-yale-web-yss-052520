@@ -1,9 +1,11 @@
 require_relative "../config/environment.rb"
 
-user1 = User.create(name: "Stacy", password: "ilovedogs", zipcode: "20015")
-user2 = User.create(name: "Ben", password: "ilovecats", zipcode: "20016")
-user3 = User.create(name: "Jonathan", password: "301", zipcode: "06510")
-user4 = User.create(name: "Annabeth", password: "percyjackson", zipcode: "06510")
+
+user1 = User.create(name: "Stacy Cohen", username: "staceycohen", password: "ilovedogs")
+user2 = User.create(name: "Ben Ten", username: "benny101", password: "ilovecats")
+user3 = User.create(name: "Jonathan Paul", username: "jpmorgan", password: "301")
+user4 = User.create(name: "Annabeth Chase", username: "Camp.HB", password: "percyjackson")
+user5 = User.create(name: "Nicole Wang", username: "nickel", password: "iam19")
 
 business1 = Business.create(name: "Wendy's", zipcode: "20008")
 business2 = Business.create(name: "Arby's", zipcode: "20008")
