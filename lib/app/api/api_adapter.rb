@@ -1,3 +1,4 @@
+require 'pry'
 require "json"
 require "http"
 require "optparse"
@@ -24,10 +25,13 @@ class ApiAdapter
       sort_by: sort_by,
       limit: SEARCH_LIMIT
     }
+  response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
+  response.parse
+end
 
-    response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
-    response.parse
-  end
+
+def self.business(business_id)
+  url = "#{API_HOST}#{BUSINESS_PATH}#{business_id}"
 
   def self.names(term, location)
     self.search(term, location)["businesses"].map {|business| business["name"]} 
@@ -50,38 +54,35 @@ class ApiAdapter
   end 
   
 
-  def self.business(business_id)
-    url = "#{API_HOST}#{BUSINESS_PATH}#{business_id}"
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Example usage: ruby sample.rb (search|lookup) [options]"
 
-    response = HTTP.auth("Bearer #{API_KEY}").get(url)
-    response.parse
+  opts.on("-tTERM", "--term=TERM", "Search term (for search)") do |term|
+    options[:term] = term
   end
 
-  options = {}
-  OptionParser.new do |opts|
-    opts.banner = "Example usage: ruby sample.rb (search|lookup) [options]"
+  opts.on("-lLOCATION", "--location=LOCATION", "Search location (for search)") do |location|
+    options[:location] = location
+  end
 
-    opts.on("-tTERM", "--term=TERM", "Search term (for search)") do |term|
-      options[:term] = term
-    end
+  opts.on("-PRICE", "--price=PRICE", "Search price (for search)") do |price|
+    options[:price] = price
+  end
 
-    opts.on("-lLOCATION", "--location=LOCATION", "Search location (for search)") do |location|
-      options[:location] = location
-    end
+  opts.on("-sSORT_BY", "--sort_by=SORT_BY", "Search sort_by (for search)") do |sort_by|
+    options[:sort_by] = sort_by
+  end
 
-    opts.on("-sSORT_BY", "--sort_by=SORT_BY", "Search sort_by (for search)") do |sort_by|
-      options[:sort_by] = sort_by
-    end
+  opts.on("-bBUSINESS_ID", "--business-id=BUSINESS_ID", "Business id (for lookup)") do |id|
+    options[:business_id] = id
+  end
 
-    opts.on("-bBUSINESS_ID", "--business-id=BUSINESS_ID", "Business id (for lookup)") do |id|
-      options[:business_id] = id
-    end
-
-    opts.on("-h", "--help", "Prints this help") do
-      puts opts
-      exit
-    end
-  end.parse!
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+end.parse!
 
 end
 
@@ -89,3 +90,5 @@ end
 
 
 
+# binding.pry
+# 0
