@@ -6,6 +6,10 @@ class User < ActiveRecord::Base
     has_many :businesses, through: :reservations
 
     def self.create_username(un)
+        self.find_or_create_by(username :un)
+    end
+    
+    def self.create_username(un)
         self.create(username: un)
     end
 
