@@ -28,6 +28,14 @@ class Reservation < ActiveRecord::Base
         return true if !self.date
         Time.now > self.date
     end
+
+    def readable_date
+        date_in_time_zone.strftime("%A, %B %d %Y, %l:%M %p")
+    end
+
+    def date_in_time_zone
+        date.in_time_zone(time_zone)
+    end
 end
 
 # to get hours, must make GET request using business ID

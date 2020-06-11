@@ -43,7 +43,7 @@ class Business < ActiveRecord::Base
         self.list_of_business(term, location).order(review_count: :desc)
     end
 
-end
+
 
 
     # daynames constant adjusted so Day 0 = Monday

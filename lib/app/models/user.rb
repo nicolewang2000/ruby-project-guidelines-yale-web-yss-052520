@@ -9,18 +9,15 @@ class User < ActiveRecord::Base
     #     self.create(username: un)
     # end
 
-<<<<<<< HEAD
     # def self.exsisting_user?(un)
     #     self.find_by(username: un)
     # end 
     def self.get_username(un)
         self.find_or_create_by(username: un)
     end
-=======
     def self.existing_user?(un)
         self.find_by(username: un)
     end 
->>>>>>> 86ed1b21351aab075c58fd5a0b059b77da41cd74
 
     def self.update_name_given_un(un, n)
         self.find_username(un).update(name: n)
@@ -60,5 +57,13 @@ class User < ActiveRecord::Base
     def delete_reservation(reservation)
         self.reservations.delete(reservation)
         reservation.delete
+    end
+
+    def reservation_list_helper
+        list = []
+        self.reservations.each_with_index do |reservation, index|
+            list[index] = [reservation.business.name, reservation.readable_date, reservation.guest_number]
+        end
+        list
     end
 end
