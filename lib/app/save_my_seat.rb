@@ -48,7 +48,14 @@ class SaveMySeat
 
     end
 
-    
+    private
+
+    def manage_reservations(user)
+        print_reservations(user)
+        if delete_any_reservations_prompt?
+            delete_reservation_master(user)
+        end
+    end
 
     def choose_restaurant_and_make_reservation(user)
         restaurant = find_restaurant_by_name(choose_restaurant_prompt)
@@ -60,10 +67,12 @@ class SaveMySeat
         make_reservation(user, restaurant)
     end
 
+    # making reservation helper methods
+
     def make_reservation(user, business)
         details = choose_date_and_guests_prompt
         reservation = user.new_reservation(details[:guest_number], Time.parse(details[:date]), business.id)
-        binding.pry
+        # binding.pry
         if reservation.is_valid?
             user.confirm_reservation(reservation) if confirm_reservation_prompt(reservation)
         else 
@@ -111,17 +120,7 @@ class SaveMySeat
     def find_restaurant_by_name(name)
         Business.find_by name: name.chomp
     end
-    
-    private
 
-    
-
-    def manage_reservations(user)
-        print_reservations(user)
-        if delete_any_reservations_prompt?
-            delete_reservation_master(user)
-        end
-    end
 
     # manage reservation helper methods
 
