@@ -61,7 +61,7 @@ class SaveMySeat
     end
     
     def greeting
-        puts Pastel.new.cyan(TTY::Font.new(:standard).write "Welcome to:")
+        puts Pastel.new.magenta(TTY::Font.new(:standard).write "Welcome to:")
         puts Pastel.new.cyan(TTY::Font.new(:standard).write "Save My Seat")
         sleep(1)
         new_or_returning?
@@ -91,7 +91,7 @@ class SaveMySeat
         else 
             puts Pastel.new.red("This password is incorrect")
             sleep(0.5)
-            login_returning_user
+            new_or_returning?
         end
 
     end 
@@ -103,9 +103,10 @@ class SaveMySeat
         if User.existing_user?(un)
             puts Pastel.new.red("Sorry. This username is already taken.")
             get_new_username
+        else
+            User.create_username(un)
+            get_name(un)
         end
-        User.create_username(un)
-        get_name(un)
     end
 
     def get_name(un)
@@ -129,7 +130,7 @@ class SaveMySeat
             get_pwd(un)
         end
         User.update_password_given_un(un, pwd)
-        puts Pastel.new.green("You have made an account. Please proceed to login.")
+        puts Pastel.new.green("Success! You have made an account. Please proceed to login.")
         sleep(1)
         login_returning_user
     end 
