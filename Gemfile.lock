@@ -1,3 +1,17 @@
+GIT
+  remote: https://github.com/arches/table_print
+  revision: a2e80332a74b30b4c23420d8968ccd09a062040d
+  specs:
+    table_print (1.5.6)
+
+GIT
+  remote: https://github.com/matt-harvey/tabulo
+  revision: 6c333f7ace1fef03575940dace30ad2c3327f09b
+  specs:
+    tabulo (2.6.0)
+      tty-screen (= 0.7.1)
+      unicode-display_width (= 1.7.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -68,6 +82,7 @@ GEM
     tilt (2.0.10)
     tty-color (0.5.1)
     tty-cursor (0.7.1)
+    tty-font (0.5.0)
     tty-prompt (0.21.0)
       necromancer (~> 0.5.0)
       pastel (~> 0.7.0)
@@ -76,12 +91,13 @@ GEM
       tty-cursor (~> 0.7)
       tty-screen (~> 0.7)
       wisper (~> 2.0.0)
-    tty-screen (0.8.0)
+    tty-screen (0.7.1)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
+    unicode-display_width (1.7.0)
     wisper (2.0.1)
 
 PLATFORMS
@@ -91,12 +107,17 @@ DEPENDENCIES
   activerecord (~> 5.2.3)
   activerecord-reset-pk-sequence
   http
+  pastel
   pry
   rake
   require_all
   sinatra
   sinatra-activerecord
   sqlite3 (~> 1.3.6)
+  table_print!
+  tabulo!
+  tty-color
+  tty-font
   tty-prompt
 
 BUNDLED WITH

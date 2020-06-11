@@ -11,5 +11,8 @@ gem 'rake'
 gem 'http'
 gem 'tty-prompt'
 gem 'activerecord-reset-pk-sequence'
-
-
+gem 'tty-color'
+gem 'tty-font'
+gem 'pastel'
+gem 'tabulo', :git => 'https://github.com/matt-harvey/tabulo'
+gem "table_print", :git => 'https://github.com/arches/table_print'

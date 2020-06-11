@@ -4,36 +4,28 @@ prompt = TTY::Prompt.new
 class User < ActiveRecord::Base
     has_many :reservations
     has_many :businesses, through: :reservations
-
-    # def self.create_username(un)
-    #     self.create(username: un)
-    # end
-
-<<<<<<< HEAD
-    # def self.exsisting_user?(un)
-    #     self.find_by(username: un)
-    # end 
-    def self.get_username(un)
-        self.find_or_create_by(username: un)
+    
+    def self.create_username(un)
+        self.create(username: un)
     end
-=======
+
     def self.existing_user?(un)
         self.find_by(username: un)
     end 
->>>>>>> 86ed1b21351aab075c58fd5a0b059b77da41cd74
+
 
     def self.update_name_given_un(un, n)
-        self.find_username(un).update(name: n)
+        self.existing_user?(un).update(name: n)
     end
 
     def self.update_password_given_un(un, pwd)
-        self.find_username(un).update(password: pwd)
+        self.existing_user?(un).update(password: pwd)
     end
 
     def self.valid_login?(un, pwd)
         !self.find_by(username: un, password: pwd).nil?
     end
-
+    
     # create instance but wait for user confirmation to save
     def new_reservation(guest_number, date, business_id)
         Reservation.new(guest_number: guest_number, user_id: self.id, business_id: business_id, date: date)
