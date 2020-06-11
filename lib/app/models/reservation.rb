@@ -18,7 +18,7 @@ class Reservation < ActiveRecord::Base
     def within_hours?
         hours = self.business.hours_helper[week_day_helper(self.date)]
         time = hour_minute_helper(self.date)
-        hours.each_slice(2) do |times|
+        hours.each do |times|
             return true if time.between?(times[0].to_i, times[1].to_i)
         end
         return false
@@ -27,6 +27,14 @@ class Reservation < ActiveRecord::Base
     def past?
         return true if !self.date
         Time.now > self.date
+    end
+
+    def readable_date
+        date_in_time_zone.strftime("%A, %B %d %Y, %l:%M %p")
+    end
+
+    def date_in_time_zone
+        date.in_time_zone(time_zone)
     end
 end
 

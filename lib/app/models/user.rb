@@ -53,4 +53,12 @@ class User < ActiveRecord::Base
         self.reservations.delete(reservation)
         reservation.delete
     end
+
+    def reservation_list_helper
+        list = []
+        self.reservations.each_with_index do |reservation, index|
+            list[index] = [reservation.business.name, reservation.readable_date, reservation.guest_number]
+        end
+        list
+    end
 end

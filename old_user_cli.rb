@@ -63,6 +63,18 @@
         un = gets.chomp
         puts "Please enter your password: "
         pwd = gets.chomp
+        find_user(un, pwd)
+        # if User.find_by(username: un, password: pwd).nil? 
+        #     if User.find_by(username: un).nil? 
+        #         puts "This username does not exsist"
+        #     else 
+        #         puts "This password is incorrect"
+        #     end 
+        #     User.new_or_returning?
+        # end
+    end
+
+    def find_user(un, pwd)
         if User.find_by(username: un, password: pwd).nil? 
             if User.find_by(username: un).nil? 
                 puts "This username does not exist."

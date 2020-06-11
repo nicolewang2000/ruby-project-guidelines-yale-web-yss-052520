@@ -20,8 +20,9 @@ business3 = Business.create(name: "Blue 44", yelp_business_id: "aSSAdDLspXrZK81m
 business4 = Business.create(name: "Medium Rare")
 business5 = Business.create(name: "Chipotle")
 
-reservation1 = Reservation.create(date: Time.now, user_id: 1, business_id: business3.id)
-reservation2 = Reservation.create(date: Time.now, user_id: user4.id, business_id: business4.id)
+reservation1 = Reservation.create(date: Time.now, user_id: 1, business_id: business3.id, time_zone: "EST")
+reservation2 = Reservation.create(date: Time.now, user_id: user4.id, business_id: business4.id, time_zone: "EST")
+reservation3 = Reservation.create(date: Time.now, user_id: 1, business_id: business3.id, time_zone: "EST")
 
 # binding.pry
 # 0
