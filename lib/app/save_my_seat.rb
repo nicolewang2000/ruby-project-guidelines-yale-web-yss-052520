@@ -12,6 +12,25 @@ class SaveMySeat
     # @@prompt = TTY::Prompt.new
 
     def run
+        current_user = greeting
+        make_reservation?(current_user)
+
+        while true
+            result = home_page
+            case result
+            when "Make new search"
+                search
+                make_reservation?(current_user)
+            when "View current reservations"
+                manage_reservations(current_user)
+            when "Log out"
+                log_out
+                break
+            end
+        end
+        
+            
+
         # Outline
 
         # Welcome! 
@@ -59,6 +78,36 @@ class SaveMySeat
 
 
     end
+
+    def make_reservation?(current_user)
+        if make_reservation_prompt
+            choose_restaurant_and_make_reservation(current_user)
+        end
+    end
+
+    def log_out
+        puts "Thanks for craving! See you soon"
+    end
+
+    def home_page
+        result = TTY::Prompt.new.select("What would you like to do?") do |menu|
+            menu.choice "Make new search"
+            menu.choice "View current reservations"
+            menu.choice "Log out"
+        end
+    end
+
+    # def search_or_manage_reservations?
+    #     result = TTY::Prompt.new.select("What would you like to do?") do |menu|
+    #         menu.choice "Make new search"
+    #         menu.choice "View current reservations"
+    #     end
+    # end
+
+    def make_reservation_prompt
+        prompt = TTY::Prompt.new
+        prompt.yes?("Would you like to make reservation at one of these restaurants?")
+    end
     
     def greeting
         puts Pastel.new.magenta(TTY::Font.new(:standard).write "Welcome to:")
@@ -93,7 +142,7 @@ class SaveMySeat
             sleep(0.5)
             new_or_returning?
         end
-
+        return User.find_by username: un
     end 
 
     def get_new_username
@@ -143,27 +192,33 @@ class SaveMySeat
         term = TTY::Prompt.new.ask("What are you craving for? (e.g. 'Salad', 'Taco', 'Breakfast', 'Brunch', 'Chinese', 'Italian')", required: true)
         location = TTY::Prompt.new.ask("Where do you want to eat today? Please provide your current zipcode or city. (e.g. 'NYC', '06510', 'Brooklyn')", required: true)
 
-        choices = %w(best_match ascending_price decreasing_price ascending_rating decreasing_rating ascending_reviews decreasing_reviews)
-        result = TTY::Prompt.new.select("How would you like to filter your results by?", choices)
-
-        Business.create_business_from_search(term, location)
-        if result ==  "best_match"
-            tp Business.list_of_business(term, location)
-        elsif result == "ascending_price"
-            tp Business.asc_price(term, location)
-        elsif result == "decreasing_price"
-            tp Business.desc_price(term, location)
-        elsif result == "ascending_rating" 
-            tp Business.asc_rating(term, location)
-        elsif result == "decreasing_rating"
-            tp Business.desc_rating(term, location)
-        elsif result == "ascending_reviews"
-            tp Business.asc_review_count(term, location)
-        elsif result == "decreasing_reviews"
-            tp Business.desc_review_count(term, location)
-        end
+            result = TTY::Prompt.new.select("How would you like to filter your results by?") do |menu|
+                menu.choice "best match"
+                menu.choice "ascending price"
+                menu.choice "decreasing price"
+                menu.choice "ascending rating"
+                menu.choice "decreasing rating"
+                menu.choice "ascending reviews"
+                menu.choice "decreasing reviews"
+            end
+            Business.create_business_from_search(term, location)
+            if result ==  "best match"
+                tp Business.list_of_business(term, location)
+            elsif result == "ascending price"
+                tp Business.asc_price(term, location)
+            elsif result == "decreasing price"
+                tp Business.desc_price(term, location)
+            elsif result == "ascending rating" 
+                tp Business.asc_rating(term, location)
+            elsif result == "decreasing rating"
+                tp Business.desc_rating(term, location)
+            elsif result == "ascending reviews"
+                tp Business.asc_review_count(term, location)
+            elsif result == "decreasing reviews"
+                tp Business.desc_review_count(term, location)
+            end
+        
     end
-end
 
     private
 
@@ -280,7 +335,7 @@ end
     end
 
     def execute_reservation_delete(choice, user)
-        new_business_id = find_restaurant_id_by_name(choice[:name])
+        new_business_id = find_restaurant_by_name(choice[:name]).id
         new_date = Time.parse(choice[:date])
 
         chosen_reservation = Reservation.find_by user_id: user.id, business_id: new_business_id, date: new_date

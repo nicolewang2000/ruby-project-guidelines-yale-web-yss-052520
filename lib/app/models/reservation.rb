@@ -30,11 +30,7 @@ class Reservation < ActiveRecord::Base
     end
 
     def readable_date
-        date_in_time_zone.strftime("%A, %B %d %Y, %l:%M %p")
-    end
-
-    def date_in_time_zone
-        date.in_time_zone(time_zone)
+        date.strftime("%A, %B %d %Y, %l:%M %p")
     end
 end
 
