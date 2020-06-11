@@ -25,13 +25,17 @@ class ApiAdapter
       sort_by: sort_by,
       limit: SEARCH_LIMIT
     }
-  response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
-  response.parse
+    response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
+    response.parse
   end
 
 
   def self.business(business_id)
     url = "#{API_HOST}#{BUSINESS_PATH}#{business_id}"
+
+    response = HTTP.auth("Bearer #{API_KEY}").get(url)
+    response.parse
+  end
 
     def self.names(term, location)
       self.search(term, location)["businesses"].map {|business| business["name"]} 
@@ -83,7 +87,7 @@ class ApiAdapter
         exit
       end
     end.parse!
-  end
+  
 
 end
 
