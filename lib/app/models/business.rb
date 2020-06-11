@@ -6,11 +6,6 @@ class Business < ActiveRecord::Base
         # should add custom error for if yelp_business_id is unknown/not included?
         ApiAdapter.business(yelp_business_id)
     end
-
-    # def new_business_from_search(term, location)
-    # ApiAdapter.names(term, location).each do |business|
-    #     Business.create(name: business)
-    # end
     
     # This creates a new business instance for every one business that a user searches for
     def self.create_business_from_search(term, location)
