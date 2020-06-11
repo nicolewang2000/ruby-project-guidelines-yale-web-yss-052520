@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2020_06_09_232715) do
     t.integer "guest_number"
     t.integer "user_id"
     t.integer "business_id"
+    t.string "time_zone"
   end
 
   create_table "users", force: :cascade do |t|
