@@ -1,5 +1,8 @@
 require_relative "../config/environment.rb"
 
+User.destroy_all
+Business.destroy_all
+
 
 user1 = User.create(name: "Stacy Cohen", username: "staceycohen", password: "ilovedogs")
 user2 = User.create(name: "Ben Ten", username: "benny101", password: "ilovecats")

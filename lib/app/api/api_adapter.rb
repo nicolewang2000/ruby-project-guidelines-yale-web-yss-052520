@@ -38,7 +38,7 @@ class ApiAdapter
   end 
   
   def self.addresses(term, location)
-    self.search(term, location)["businesses"].map {|business| business["location"]["display_address"]}.flatten
+    self.search(term, location)["businesses"].map {|business| business["location"]["display_address"].join(" ")}
   end 
   
   def self.prices(term, location)
@@ -84,6 +84,7 @@ class ApiAdapter
   end.parse!
 
 end
+
 
 
 

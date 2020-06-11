@@ -14,9 +14,11 @@ ActiveRecord::Schema.define(version: 2020_06_09_000438) do
 
   create_table "businesses", force: :cascade do |t|
     t.string "name"
-    t.string "zipcode"
+    t.string "yelp_business_id"
+    t.string "address"
     t.float "avg_rating"
     t.integer "review_count"
+    t.string "price"
   end
 
   create_table "reservations", force: :cascade do |t|

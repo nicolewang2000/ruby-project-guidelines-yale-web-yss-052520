@@ -1,4 +1,52 @@
 class Business < ActiveRecord::Base
     has_many :reservations
     has_many :users, through: :reservations
+    
+    def detailed_info
+        # should add custom error for if yelp_business_id is unknown/not included?
+        ApiAdapter.business(yelp_business_id)
+    end
+
+    # def new_business_from_search(term, location)
+    # ApiAdapter.names(term, location).each do |business|
+    #     Business.create(name: business)
+    # end
+    
+    # This creates a new business instance for every one business that a user searches for
+    def self.create_business_from_search(term, location)
+        ApiAdapter.search(term, location)["businesses"].each do |business|
+            Business.create(yelp_business_id: business["id"], name: business["name"], avg_rating: business["rating"], review_count: business["review_count"], price: business["price"], address: business["location"]["display_address"].join(" "))
+        end
+    end
+      
+    # This allows you to return a table of the searched results
+    def self.list_of_business(term, location)
+        Business.where(yelp_business_id: ApiAdapter.ids(term, location))
+    end
+    
+    def self.asc_price(term, location)
+        self.list_of_business(term, location).order(price: :asc)
+    end
+
+    def self.desc_price(term, location)
+        self.list_of_business(term, location).order(price: :desc)
+    end
+
+    def self.asc_rating(term, location)
+        self.list_of_business(term, location).order(avg_rating: :asc)
+    end
+
+    def self.desc_rating(term, location)
+        self.list_of_business(term, location).order(avg_rating: :desc)
+    end
+
+    def self.asc_review_count(term, location)
+        self.list_of_business(term, location).order(review_count: :asc)
+    end
+
+    def self.desc_review_count(term, location)
+        self.list_of_business(term, location).order(review_count: :desc)
+    end
+
 end
+
