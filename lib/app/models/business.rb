@@ -18,6 +18,9 @@ class Business < ActiveRecord::Base
         end
     end
 
+    # {"Monday" => ["0900", "1330", "1630", "2200"]
+    #  "Tuesday" => ["random opening times"]}
+
     # returns detailed business hash from API including specific hours
     def detailed_info
         # should add custom error for if yelp_business_id is unknown/not included?
