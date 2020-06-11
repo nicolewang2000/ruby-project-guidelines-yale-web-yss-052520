@@ -7,10 +7,9 @@ class Business < ActiveRecord::Base
         ApiAdapter.business(yelp_business_id)
     end
     
-    # This creates a new business instance for every one business that a user searches for
     def self.create_business_from_search(term, location)
         ApiAdapter.search(term, location)["businesses"].each do |business|
-            Business.create(yelp_business_id: business["id"], name: business["name"], avg_rating: business["rating"], review_count: business["review_count"], price: business["price"], address: business["location"]["display_address"].join(" "))
+            Business.find_or_create_by(yelp_business_id: business["id"], name: business["name"], avg_rating: business["rating"], review_count: business["review_count"], price: business["price"], address: business["location"]["display_address"].join(" "))
         end
     end
       
