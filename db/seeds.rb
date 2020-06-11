@@ -1,7 +1,9 @@
 require_relative "../config/environment.rb"
 
 User.destroy_all
+User.reset_pk_sequence
 Business.destroy_all
+
 
 
 user1 = User.create(name: "Stacy Cohen", username: "staceycohen", password: "ilovedogs")

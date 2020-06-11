@@ -65,9 +65,9 @@
         pwd = gets.chomp
         if User.find_by(username: un, password: pwd).nil? 
             if User.find_by(username: un).nil? 
-                puts "This username does not exsist"
+                puts "This username does not exist."
             else 
-                puts "This password is incorrect"
+                puts "This password is incorrect."
             end 
             User.new_or_returning?
         end
