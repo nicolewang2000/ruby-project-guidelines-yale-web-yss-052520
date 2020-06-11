@@ -18,7 +18,7 @@ class Reservation < ActiveRecord::Base
     def within_hours?
         hours = self.business.hours_helper[week_day_helper(self.date)]
         time = hour_minute_helper(self.date)
-        hours.each_slice(2) do |times|
+        hours.each do |times|
             return true if time.between?(times[0].to_i, times[1].to_i)
         end
         return false

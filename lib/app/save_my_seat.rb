@@ -49,8 +49,72 @@ class SaveMySeat
     end
 
     
+
+    def choose_restaurant_and_make_reservation(user)
+        restaurant = find_restaurant_by_name(choose_restaurant_prompt)
+        if !restaurant
+            puts "Restaurant not found. Please re-enter name exactly as it appears above."
+            choose_restaurant_and_make_reservation
+        end
+        display_restaurant_hours(restaurant)
+        make_reservation(user, restaurant)
+    end
+
+    def make_reservation(user, business)
+        details = choose_date_and_guests_prompt
+        reservation = user.new_reservation(details[:guest_number], Time.parse(details[:date]), business.id)
+        binding.pry
+        if reservation.is_valid?
+            user.confirm_reservation(reservation) if confirm_reservation_prompt(reservation)
+        else 
+            prompt = TTY::Prompt.new
+            puts "Sorry, reservation date invalid."
+            if prompt.yes?("Would you like to choose a different date?")
+                make_reservation(user, business)
+            end
+        end
+    end
+
+    def confirm_reservation_prompt(reservation)
+        puts "#{reservation.business.name}, #{reservation.date.strftime("%A, %B %d, %l:%M %p")}"
+        prompt = TTY::Prompt.new
+        prompt.yes?("Is this correct?")
+    end
+
+    def choose_date_and_guests_prompt
+        prompt = TTY::Prompt.new
+        prompt.collect do 
+            key(:date).ask("Date? Please format as 'June 11 7:00pm'")
+            key(:guest_number).ask("How many guests? Enter numerical value (i.e. 2, not two)")
+        end
+    end
+
+    def display_restaurant_hours(business)
+        business.hours_helper.each do |key, values|
+            puts "#{key}'s hours:"
+            values.each do |time_pair|
+                puts "#{hour_minute_helper2(time_pair[0])} - #{hour_minute_helper2(time_pair[1])}"
+            end
+        end
+    end
+
+    def hour_minute_helper2(time)
+        time_arr = time.chars
+        Time.parse("#{time_arr[0]}#{time_arr[1]}:#{time_arr[2]}#{time_arr[3]}").strftime("%l:%M %p").strip
+    end
+
+    def choose_restaurant_prompt
+        prompt = TTY::Prompt.new
+        prompt.ask("Enter the full name of the restaurant you would like to make a reservation at")
+    end
+
+    def find_restaurant_by_name(name)
+        Business.find_by name: name.chomp
+    end
     
     private
+
+    
 
     def manage_reservations(user)
         print_reservations(user)
@@ -58,6 +122,8 @@ class SaveMySeat
             delete_reservation_master(user)
         end
     end
+
+    # manage reservation helper methods
 
     def print_reservations(user)
         return "You have no reservations at this time." if user.reservations.count == 0
@@ -98,7 +164,7 @@ class SaveMySeat
     end
 
     def execute_reservation_delete(choice, user)
-        new_business_id = (Business.find_by name: choice[:name].chomp).id
+        new_business_id = find_restaurant_id_by_name(choice[:name])
         new_date = Time.parse(choice[:date])
 
         chosen_reservation = Reservation.find_by user_id: user.id, business_id: new_business_id, date: new_date

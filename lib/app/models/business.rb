@@ -54,12 +54,13 @@ class Business < ActiveRecord::Base
     def hours_helper
         detailed_info["hours"][0]["open"].each_with_object({}) do |day_info, hours_read|
             if hours_read[DAYNAMES[day_info["day"]]]
-                hours_read[DAYNAMES[day_info["day"]]].push(day_info["start"])
-                hours_read[DAYNAMES[day_info["day"]]].push(day_info["end"])
+                hours_read[DAYNAMES[day_info["day"]]].push([day_info["start"], day_info["end"]])
             else
-                hours_read[DAYNAMES[day_info["day"]]] = [day_info["start"], day_info["end"]]
+                hours_read[DAYNAMES[day_info["day"]]] = [[day_info["start"], day_info["end"]]]
             end
         end
     end
     
 end
+
+
