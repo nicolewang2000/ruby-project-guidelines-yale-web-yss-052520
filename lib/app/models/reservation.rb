@@ -14,7 +14,7 @@ class Reservation < ActiveRecord::Base
         hours.each do |times|
             return true if time.between?(times[0].to_i, times[1].to_i)
             if times[0].to_i > times[1].to_i
-                return true if time.between?(times[0].to_i, 24 + times[1].to_i)
+                return true if time.between?(times[0].to_i, 2400 + times[1].to_i)
             end
         end
         return false
