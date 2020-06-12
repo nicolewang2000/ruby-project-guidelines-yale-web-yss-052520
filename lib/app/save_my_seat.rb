@@ -143,23 +143,33 @@ class SaveMySeat
         term = TTY::Prompt.new.ask("What are you craving for? (e.g. 'Salad', 'Taco', 'Breakfast', 'Brunch', 'Chinese', 'Italian')", required: true)
         location = TTY::Prompt.new.ask("Where do you want to eat today? Please provide your current zipcode or city. (e.g. 'NYC', '06510', 'Brooklyn')", required: true)
 
-        choices = %w(best_match ascending_price decreasing_price ascending_rating decreasing_rating ascending_reviews decreasing_reviews)
-        result = TTY::Prompt.new.select("How would you like to filter your results by?", choices)
+        # choices = %w(best_match ascending_price decreasing_price ascending_rating decreasing_rating ascending_reviews decreasing_reviews)
+        # result = TTY::Prompt.new.select("How would you like to filter your results by?", choices)
+
+        result = TTY::Prompt.new.select("How would you like to filter your results by?") do |menu|
+            menu.choice "best match"
+            menu.choice "ascending price"
+            menu.choice "decreasing price"
+            menu.choice "ascending rating"
+            menu.choice "decreasing rating"
+            menu.choice "ascending reviews"
+            menu.choice "decreasing reviews"
+        end
 
         Business.create_business_from_search(term, location)
-        if result ==  "best_match"
+        if result ==  "best match"
             tp Business.list_of_business(term, location)
-        elsif result == "ascending_price"
+        elsif result == "ascending price"
             tp Business.asc_price(term, location)
-        elsif result == "decreasing_price"
+        elsif result == "decreasing price"
             tp Business.desc_price(term, location)
-        elsif result == "ascending_rating" 
+        elsif result == "ascending rating" 
             tp Business.asc_rating(term, location)
-        elsif result == "decreasing_rating"
+        elsif result == "decreasing rating"
             tp Business.desc_rating(term, location)
-        elsif result == "ascending_reviews"
+        elsif result == "ascending reviews"
             tp Business.asc_review_count(term, location)
-        elsif result == "decreasing_reviews"
+        elsif result == "decreasing reviews"
             tp Business.desc_review_count(term, location)
         end
     end
