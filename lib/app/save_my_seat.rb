@@ -149,7 +149,9 @@ class SaveMySeat
 
     def manage_reservations(user)
         print_reservations(user)
-        if delete_any_reservations_prompt?
+        if user.reservations.count == 0
+            home_page
+        elsif delete_any_reservations_prompt?
             delete_reservation_master(user)
         end
     end
@@ -159,9 +161,10 @@ class SaveMySeat
         if !restaurant
             puts "Restaurant not found. Please re-enter name exactly as it appears above."
             choose_restaurant_and_make_reservation
+        else 
+            display_restaurant_hours(restaurant)
+            make_reservation(user, restaurant)
         end
-        display_restaurant_hours(restaurant)
-        make_reservation(user, restaurant)
     end
 
     # making reservation helper methods
@@ -221,7 +224,10 @@ class SaveMySeat
     # manage reservation helper methods
 
     def print_reservations(user)
-        return "You have no reservations at this time." if user.reservations.count == 0
+        if user.reservations.count == 0
+            puts "You have no reservations at this time." 
+            return
+        end
         user.reservation_list_helper.each{|reservation| p "Restaurant: #{reservation[0]}, Date: #{reservation[1]}, Guests: #{reservation[2]}"}
     end
 
