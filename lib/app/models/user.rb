@@ -26,7 +26,6 @@ class User < ActiveRecord::Base
         !self.find_by(username: un, password: pwd).nil?
     end
     
-    # create instance but wait for user confirmation to save
     def new_reservation(guest_number, date, business_id)
         Reservation.new(guest_number: guest_number, user_id: self.id, business_id: business_id, date: date)
     end
@@ -36,7 +35,6 @@ class User < ActiveRecord::Base
         reservation.save
     end
 
-    # accepts API business hash to create new business instance
     def new_business_from_API(business)
         self.businesses.push(Business.create(yelp_business_id: business["id"], name: business["name"], address: business["display_address"], avg_rating: business["rating"], review_count: business["review_count"]))
     end

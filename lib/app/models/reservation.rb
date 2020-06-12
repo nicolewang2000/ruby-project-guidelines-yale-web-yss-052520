@@ -4,13 +4,6 @@ class Reservation < ActiveRecord::Base
     belongs_to :business
     belongs_to :user
 
-# Choose restaurant from list to make reservation
-# Given restaurant name, display hours
-# User chooses date/time + # of people
-# Create new instance of Business object
-# Given those arguments, create new instance of Reservation class for that user_id/business_id
-
-    # Given reservation instance, determine whether it is still valid
     def is_valid?
         within_hours? && !past?
     end
@@ -33,14 +26,6 @@ class Reservation < ActiveRecord::Base
         date.strftime("%A, %B %d %Y, %l:%M %p")
     end
 end
-
-# to get hours, must make GET request using business ID
-
-# helper methods 
-
-# def hours_split_helper(hours)
-
-# end
 
 def week_day_helper(date)
     date.strftime("%A")
