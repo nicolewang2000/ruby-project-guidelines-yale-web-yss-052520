@@ -14,14 +14,10 @@ user4 = User.create(name: "Annabeth Chase", username: "Camp.HB", password: "perc
 user5 = User.create(name: "Nicole Wang", username: "nickel", password: "iam19")
 
 
-business1 = Business.create(name: "Wendy's")
-business2 = Business.create(name: "Arby's")
 business3 = Business.create(name: "Blue 44", yelp_business_id: "aSSAdDLspXrZK81mlxrFFg")
-business4 = Business.create(name: "Medium Rare")
-business5 = Business.create(name: "Chipotle")
+
 
 reservation1 = Reservation.create(date: Time.now, user_id: 1, business_id: business3.id)
-reservation2 = Reservation.create(date: Time.now, user_id: user4.id, business_id: business4.id)
 reservation3 = Reservation.create(date: Time.now, user_id: 1, business_id: business3.id)
 
 # binding.pry
