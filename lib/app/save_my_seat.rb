@@ -5,11 +5,6 @@ require 'pry'
 require 'table_print'
 
 class SaveMySeat
-    attr_accessor :user, :reservation, :business
-   
-    # @@pastel = Pastel.new
-    # @@font = TTY::Font.new(:standard)
-    # @@prompt = TTY::Prompt.new
 
     def run
         current_user = greeting
@@ -28,56 +23,9 @@ class SaveMySeat
                 break
             end
         end
-        
-            
-
-        # Outline
-
-        # Welcome! 
-        # - ask if you have an account
-        #   - if yes
-        #       - get username
-        #       - check if username exists
-        #       - either prompt for password or prompt to create account (User does not exist)
-        #   - if no
-        #       - prompt to create account
-        #       - prompt to login 
-        
-        # Logged In!
-        # - Would you like to view your reservations?
-        # - Would you like to execute a search?
-
-        # Business Search
-        # - To search businesses: Ask for current location + cuisine type
-        #   - execute search (create business instances for results)
-        #   - prompt user to choose sorting method
-        #   - print out search list (self.list_of_businesses)
-        #   - prompt user to execute new search/different sorting method/make reservation
-
-        # def business_search
-        #   helper methods that do the things we outline
-        # end
-
-        # Manage Reservations
-        # - list reservations or say "you have no reservations at this time"
-        # - Give user option to delete reservations
-
-        # Choosing Business for Reservation
-        # - Prompt user to choose a business
-        # - Retrieve and display business hours
-        # - Prompt user to choose reservation date/guest_number
-        #   - check if reservation is valid
-        # - Once validity is good, ask user to confirm
-        # - Once confirmed, persist reservation to database
-
-
-        # Pseudocode
-
-        # welcome
-        # login page
-
-
     end
+
+    private
 
     def make_reservation?(current_user)
         if make_reservation_prompt
@@ -86,7 +34,7 @@ class SaveMySeat
     end
 
     def log_out
-        puts "Thanks for craving! See you soon"
+        puts Pastel.new.green("Thanks for craving! See you soon")
     end
 
     def home_page
@@ -96,13 +44,6 @@ class SaveMySeat
             menu.choice "Log out"
         end
     end
-
-    # def search_or_manage_reservations?
-    #     result = TTY::Prompt.new.select("What would you like to do?") do |menu|
-    #         menu.choice "Make new search"
-    #         menu.choice "View current reservations"
-    #     end
-    # end
 
     def make_reservation_prompt
         prompt = TTY::Prompt.new
@@ -121,11 +62,6 @@ class SaveMySeat
     end
 
     def login_returning_user
-        # puts "Please enter your username:"
-        # un = gets.chomp
-        # puts "Please enter your password: "
-        # pwd = gets.chomp
-        
         un = TTY::Prompt.new.ask("Username:", required: true)
         pwd = TTY::Prompt.new.mask("Password:", required: true)
         
@@ -146,8 +82,6 @@ class SaveMySeat
     end 
 
     def get_new_username
-        # puts "Please enter a new username:"
-        # un = gets.chomp
         un = TTY::Prompt.new.ask("Please enter a new username:", required: true)
         if User.existing_user?(un)
             puts Pastel.new.red("Sorry. This username is already taken.")
@@ -159,7 +93,6 @@ class SaveMySeat
     end
 
     def get_name(un)
-        # puts "Please enter your first and last name:"
         response = TTY::Prompt.new.ask("Please enter your first and last name:", required: true)
         n = response.split.each {|name| name.capitalize!}.join(' ')
         if n.split.length != 2
@@ -171,8 +104,6 @@ class SaveMySeat
     end
     
     def get_pwd(un)
-        # puts "Please enter a password:"
-        # pwd = gets.chomp
         pwd = TTY::Prompt.new.ask("Please enter a password:", required: true)
         if pwd.split.length != 1 || pwd.length == 0 
             puts Pastel.new.red("Invalid password.")
@@ -185,10 +116,6 @@ class SaveMySeat
     end 
 
     def search
-        # puts "What are you craving for? (e.g. 'Salad', 'Taco', 'Breakfast', 'Brunch', 'Chinese', 'Italian')"
-        # term = gets.chomp
-        # puts "Where do you want to eat today? Please provide your current zipcode or city. (e.g. 'NYC', '06510', 'Brooklyn')"
-        # location = gets.chomp
         term = TTY::Prompt.new.ask("What are you craving for? (e.g. 'Salad', 'Taco', 'Breakfast', 'Brunch', 'Chinese', 'Italian')", required: true)
         location = TTY::Prompt.new.ask("Where do you want to eat today? Please provide your current zipcode or city. (e.g. 'NYC', '06510', 'Brooklyn')", required: true)
 
@@ -220,8 +147,6 @@ class SaveMySeat
         
     end
 
-    private
-
     def manage_reservations(user)
         print_reservations(user)
         if delete_any_reservations_prompt?
@@ -244,7 +169,6 @@ class SaveMySeat
     def make_reservation(user, business)
         details = choose_date_and_guests_prompt
         reservation = user.new_reservation(details[:guest_number], Time.parse(details[:date]), business.id)
-        # binding.pry
         if reservation.is_valid?
             user.confirm_reservation(reservation) if confirm_reservation_prompt(reservation)
         else 
@@ -272,9 +196,9 @@ class SaveMySeat
 
     def display_restaurant_hours(business)
         business.hours_helper.each do |key, values|
-            puts "#{key}'s hours:"
+            puts Pastel.new.blue("#{key}'s hours:")
             values.each do |time_pair|
-                puts "#{hour_minute_helper2(time_pair[0])} - #{hour_minute_helper2(time_pair[1])}"
+                puts Pastel.new.green("#{hour_minute_helper2(time_pair[0])} - #{hour_minute_helper2(time_pair[1])}")
             end
         end
     end

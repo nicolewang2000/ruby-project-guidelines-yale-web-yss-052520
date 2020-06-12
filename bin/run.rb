@@ -3,5 +3,3 @@ require 'tty-prompt'
 
 app = SaveMySeat.new
 app.run
-
-puts "HELLO WORLD"
